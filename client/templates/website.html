@@ -1,0 +1,18 @@
+<template name="website">
+    <div class="container">
+        <div class="raw">
+            <a href="{{url}}">{{title}}</a>
+            <p>
+                {{description}}
+            </p>
+
+            <div class="comment-section">
+                {{> commentsBox id=_id}}
+            </div>
+
+            <p>
+                Added on: {{createdOnNice}}
+            </p>
+        </div>
+    </div>
+</template>
