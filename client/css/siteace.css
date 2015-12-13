@@ -33,6 +33,10 @@
     child-align: middle;
 }
 
+.rating-badge{
+    float: right !important;
+}
+
 .website-details{
     float: right;
 }

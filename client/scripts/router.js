@@ -30,6 +30,9 @@ Router.route('/search', function (){
     });
     this.render('search_results', {
         to:"main"
+        //data:function(){
+        //    return Session.get("isSearch")
+        //}
     });
     this.render('footer', {
         to:"footer"

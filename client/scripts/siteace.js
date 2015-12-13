@@ -1,95 +1,82 @@
 /**
 * Created by sladkovm on 02/12/15.
 */
-//
 
-//if(Meteor.startup()) {
-//    console.log('Set default sort method')
-//    Session.setDefault("searchQuery", undefined)
-//}
-
-
-/////
-// template helpers
-/////
 
 // helper function that returns all available websites
 Template.website_list.helpers({
     websites:function(){
-            console.log("Website list template")
-            //if(Session.get("isSearch")){
-            //    console.log("Search results")
-            //    var ids = Session.get("ids")
-            //    return Websites.find({_id:{$in:ids}}, {sort:{rating:-1}});
-            //}else{
-                console.log("Normal output")
-                return Websites.find({}, {sort:{rating:-1}});
-            //}
-
+        //console.log("Website list template");
+        //console.log("Normal output");
+        return Websites.find({}, {sort:{rating:-1}});
     }
 });
 
 
-//// helper function that returns all available websites
 Template.search_results.helpers({
     searched_websites:function(){
-        console.log("Template: search_results")
+        //console.log("Template: search_results");
         var ids = Session.get("ids");
         console.log('Template search results: ', ids);
         console.log('Template search results: ', Websites.find({_id:{$in:ids}}, {sort:{rating:-1}}).fetch());
         return Websites.find({_id:{$in:ids}}, {sort:{rating:-1}});
+    },
+    search_query:function(){
+        return Session.get("isSearch");
     }
 });
 
 
 Template.navbar.events({
     "submit .js-search": function (event) {
+        event.preventDefault();
         var searchQuery = event.target.query.value;
         Meteor.call("remoteSearch", searchQuery, function(error, response){
             if(error){
                 console.log("Error client remoteSearch:", error)
             } else {
-                Session.set("isSearch", searchQuery)
+                //Session.set("isSearch", searchQuery);
                 Session.set("ids", response);
-                console.log('Client submit reponse: : ', response);
-                console.log('Client submit clicking on a #js-search-route')
-                $('#js-search-route').click() // Trigger the actual routing
-                return false // prevent page from reloading?
+                //console.log('Client submit reponse: : ', response);
+                //console.log('Client submit clicking on a #js-search-route')
+                $('#js-search-route').click(); // Trigger the actual routing
+                return false; // prevent page from reloading?
             }
         });
-    },
-    "click .js-logo, .js-home": function(event){
-        Session.set("isSearch", undefined)
-        return false
-    }
-})
 
-/////
-// template events
-/////
+        // Clear form
+        //console.log("Search form: ", event.target)
+        event.target.query.value = "";
+    },
+
+    "click .js-logo, .js-home": function(){
+        Session.set("isSearch", undefined);
+        return false;
+    }
+});
 
 
 
 Template.website_item.events({
-    "click .js-upvote":function(event){
+    "click .js-upvote":function(){
         if (Meteor.user()){
             upvote(this);
             getRating(this);
             return false;// prevent the button from reloading the page
         }
     },
-    "click .js-downvote":function(event){
+    "click .js-downvote":function(){
         if(Meteor.user()){
             downvote(this);
             getRating(this);
             return false;// prevent the button from reloading the page
         }
         },
-    "click .js-website-details":function(event){
+    "click .js-website-details":function(){
         // store the website _id in the Session object so it can be used by template
         // console.log('Event "click .js-website-details', this)
         Session.set("website_id", this._id)
-    },
+    }
     //"click .js-sort-by-date":function(event){
     //    Session.set(sortMethod, "sortByDate")
     //},
