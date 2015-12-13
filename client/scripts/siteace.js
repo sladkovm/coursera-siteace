@@ -35,7 +35,7 @@ Template.navbar.events({
             if(error){
                 console.log("Error client remoteSearch:", error)
             } else {
-                //Session.set("isSearch", searchQuery);
+                Session.set("isSearch", searchQuery);
                 Session.set("ids", response);
                 //console.log('Client submit reponse: : ', response);
                 //console.log('Client submit clicking on a #js-search-route')

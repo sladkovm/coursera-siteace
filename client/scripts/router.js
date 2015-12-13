@@ -29,7 +29,7 @@ Router.route('/search', function (){
         to:"navbar"
     });
     this.render('search_results', {
-        to:"main"
+        to:"main",
         //data:function(){
         //    return Session.get("isSearch")
         //}
